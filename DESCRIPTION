@@ -10,7 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: 
-    sf (>1.0-1x)
+    sf (>= 1.0-1x)
     R (>= 2.10)
 LazyData: true
 URL: https://github.com/lexcomber/Intro2R4SpatAnal
