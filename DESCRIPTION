@@ -1,5 +1,5 @@
 Package: Intro2R4SpatAnal
-Title: Data package supporting "An Introduction to R for Spatial Analysis and Mapping in R" (3rd ed) by Chris Brunsdon & Lex Comber 
+Title: Data Package for "An Intro to Spatial Analysis & Mapping in R" (3rd ed)
 Version: 0.0.0.1
 Authors@R: 
     person("Lex", "Comber", , "a.comber@leeds.ac.uk", role = c("aut", "cre"),
