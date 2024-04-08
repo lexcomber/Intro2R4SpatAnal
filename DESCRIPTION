@@ -1,5 +1,5 @@
 Package: Intro2R4SpatAnal
-Title: A dataset that supports the 3rd edition of "An Introduction to R for Spatial Analysis and Mapping in R: by Chris Brunsdon & Lex Comber 
+Title: Package to support the 3rd edition of "An Introduction to R for Spatial Analysis and Mapping in R: by Chris Brunsdon & Lex Comber 
 Version: 0.0.0.1
 Authors@R: 
     person("Lex", "Comber", , "a.comber@leeds.ac.uk", role = c("aut", "cre"),
@@ -10,6 +10,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: 
+    sf (>1.0-1x)
     R (>= 2.10)
 LazyData: true
 URL: https://github.com/lexcomber/Intro2R4SpatAnal
