@@ -1,13 +1,13 @@
 ## Code for Chapter 3 of An Introduction to R for Spatial Analysis and Mapping
-# Lex Comber & Chris Bunsdon
+# Lex Comber & Chris Brunsdon
 
 if (!is.element("sf", installed.packages()))
     install.packages("sf", dep = T)
 library(sf)
 
-is.element('sf', installed.packages())
+# is.element('sf', installed.packages())
 
-install.packages("sf", dep = TRUE)
+# install.packages("sf", dep = TRUE)
 
 library(sf)
 
@@ -18,14 +18,14 @@ help(st_read)
 # or
 ?st_read
 
-library(sf)                 # for spatial data handling
-library(tidyverse)          # for dplyr operations and ggplot  
 library(Intro2R4SpatAnal)   # for example data
 library(cols4all)           # for colour palettes
 library(tmap)               # for mapping
 library(cowplot)            # for combining maps
 library(ggspatial)          # for OSM context and backdrops 
 library(raster)             # for handling raster objects
+library(sf)                 # for spatial data handling
+library(tidyverse)          # for dplyr operations and ggplot  
 
 if (!is.element("devtools", installed.packages()))
     install.packages("devtools", dep = T)
@@ -88,9 +88,9 @@ ggplot(leeds_lsoa, aes(carework)) +
   xlab("percentage vacant") + 
   labs(title = "The distribution of % in service occupations")
 # density histogram
-ggplot(tb, aes(x=carework)) + 
+ggplot(leeds_lsoa, aes(x=carework)) + 
   geom_histogram(aes(y=after_stat(density)), col = "salmon", fill = "lightblue", bins = 20) +
-  geom_density(alpha=.4, fill="darksalmon") +
+  geom_density(alpha=.4, fill="darksalmon")
 
 p1 <- leeds_lsoa |> st_drop_geometry() |>
   # create the categorical variable
@@ -489,16 +489,6 @@ save(polys, file = "polys.RData")
 
 my.polys <- st_coordinates(leeds_msoa |> slice(1:10, )) 
 
-summary(my.polys)
-my.sf <- 
-  my.polys |> 
-  data.frame() |>
-  st_as_sf(coords = c("X", "Y")) |>
-  group_by(L3) |>
-  summarise(geometry = st_combine(geometry)) |>
-  st_cast("POLYGON") 
-my.sf |>  ggplot() + geom_sf()
-
 # points
 points_sf |> ggplot() + geom_sf()
 # lines
@@ -521,7 +511,7 @@ leeds_msoa |>
 # areas with points and transparency
 points_sf |> ggplot() + geom_sf(col = "darkgreen") +
   # note the 2nd data later has to be specified
-  geom_sf(data = leeds_msoa, fill = "tomato", alpha = 0.1) + 
+  geom_sf(data = leeds_msoa, fill = "tomato", alpha = 0.1) 
 
 # points
 points_sf |> ggplot(aes(size = value)) + geom_sf()
@@ -532,22 +522,11 @@ library(cols4all)
 leeds_msoa |> ggplot(aes(fill = degree)) + geom_sf() + 
   scale_fill_continuous_c4a_seq("scico.batlow")
 
-library(cols4all)0
+library(cols4all)
 c4a_gui()
 
 leeds_msoa |> ggplot(aes(fill = degree)) + geom_sf() + 
   scale_fill_continuous_c4a_seq("brewer.yl_gn_bu")
-
-data(leeds_lsoa) 
-leeds_lsoa |> ggplot(aes(fill = unemp)) + geom_sf() +
-  scale_fill_binned_c4a_seq("kovesi.linear_yl_rd_bk")
-
-data(pm10) 
-# by size
-pm10 |> ggplot(aes(size = pm102021g)) + geom_sf()  
-# by colour
-pm10 |> ggplot(aes(col = pm102021g)) + geom_sf(size = 5) +
-  scale_colour_continuous_c4a_seq("kovesi.linear_yl_rd_bk")
 
 leeds |> data.frame() |> ggplot(aes(x = X, y = Y)) + geom_polygon() + 
   # ensure the aspect ratio is 1:1
@@ -557,29 +536,24 @@ polys |> st_coordinates() |> data.frame() |> mutate(L2 = factor(L2)) |>
   ggplot(aes(x = X, y = Y, group = L2, fill = L2)) + geom_polygon() + 
   coord_sf() +xlab("") + ylab("")
 
-# example using poly glasbey
-polys |> st_coordinates() |> data.frame() |> mutate(L2 = factor(L2)) |>
-  ggplot(aes(x = X, y = Y, group = L2, fill = L2)) + geom_polygon() + 
-  coord_sf() +xlab("") + ylab("") +
-  scale_fill_discrete_c4a_div("poly.glasbey")
 
 # PM10 grid 
 pm10.grid |>
   ggplot(aes(x = X, y = Y, fill = pm102021g)) +
   geom_raster() + coord_sf() + xlab("") + ylab("") +
-	scale_fill_continuous_c4a_seq(palette="kovesi.linear_wh_rd_bk", name = "PM10")
+	scale_fill_continuous_c4a_seq(palette="kovesi.bk_rd_wh", name = "PM10")
 # simulated example	with a spatial trend 
 expand.grid(X = 1:25, Y = 25:1) |> 
-  mutate(value = 1 + ( (1/12) * (gr$X + gr$Y) )) |>  
+  mutate(value = 1 + ( (1/12) * (X + Y) )) |>  
   ggplot(aes(x = X, y = Y, fill = value)) + 
   geom_raster() + coord_sf() + theme_void() +
-	scale_fill_continuous_c4a_seq(palette="kovesi.linear_wh_rd_bk")
+	scale_fill_continuous_c4a_seq(palette="kovesi.bk_rd_wh")
 
 # make p1, a basic plot 
 p1 <- pm10.grid |>
   ggplot(aes(x = X, y = Y, fill = pm102021g)) +
   geom_raster() + coord_sf() + xlab("") + ylab("") +
-	scale_fill_continuous_c4a_seq(palette="kovesi.linear_wh_rd_bk", name = "PM10")
+	scale_fill_continuous_c4a_seq(palette="kovesi.bk_rd_wh", name = "PM10")
 
 p1
 
@@ -638,7 +612,7 @@ leeds_lsoa |>
   ggplot(aes(fill = nocar)) +
   annotation_map_tile(zoom = 10, type='opencycle') + 
   geom_sf() + coord_sf(datum = st_crs(leeds_lsoa)) + xlab("") + ylab("") +
-	scale_fill_continuous_c4a_seq(palette="kovesi.linear_wh_rd_bk", 
+	scale_fill_continuous_c4a_seq(palette="kovesi.bk_rd_wh", reverse = T,  
 	                              name = "No Car\nOwnership") +
   annotation_north_arrow(style = north_arrow_fancy_orienteering,
                          pad_x = unit(0.3, "in"), pad_y = unit(0.15, "in")) +
@@ -652,6 +626,8 @@ rm(list = ls())
 library(sf)
 library(tmap)
 library(Intro2R4SpatAnal)
+library(tidyverse)
+library(cols4all)
 data(leeds_msoa)        # areas
 data(leeds_lsoa)        # areas
 data(crimes)            # points
@@ -664,9 +640,8 @@ leeds_lsoa <- leeds_lsoa |> st_transform(4326)
 
 qtm(leeds_msoa, fill = "red", style = "natural")
 
-qtm(leeds_msoa, fill = "incomer1yr", text.size=0.5, 
-    format="World_wide", style="classic",
-    fill.title="% moved to \nthe LSOA")
+qtm(leeds_msoa, fill = "incomer1yr", 
+    format="World_wide", style="classic")
 
 # do a merge
 leeds_outline <- st_union(leeds_msoa)
@@ -715,9 +690,8 @@ tm_shape(leeds_msoa) + tm_borders(col = "chartreuse")
 # areas fill
 tm_shape(leeds_msoa) + tm_fill(col = "cornflowerblue") 
 # areas outlines & fill
-tm_shape(leeds_msoa) + tm_polygons(col = "cornflowerblue", border.col = "chartreuse") 
+tm_shape(leeds_msoa) + tm_polygons(fill = "cornflowerblue", col = "chartreuse") 
 
-tmap_mode("plot")
 tm_shape(leeds_lsoa) +
   tm_polygons(fill = "muslim")
 
@@ -752,7 +726,7 @@ tm_shape(leeds_lsoa) +
                                       bg.color="grey95", frame=TRUE, title = "% No Car")) 
 
 tm_shape(leeds_lsoa) +
-  tm_polygons(rep("nocar", 3), col = NA,
+  tm_polygons(fill = rep("nocar", 3), col = NULL,
               fill.scale = list(tm_scale_intervals(values = "brewer.yl_or_rd", 
                                                    style = "kmeans"),
                                 tm_scale_intervals(values = "brewer.reds"),
@@ -760,8 +734,8 @@ tm_shape(leeds_lsoa) +
               fill.legend = tm_legend("", position=c("left", "bottom"), 
                                       bg.color="grey95")) +
   tm_layout(panel.labels = c("kmeans", "equal interval", "continuous"), 
-            inner.margins = c(0.05, 0.4, 0.1, 0.05))+
-  tm_shape(leeds_outline) + tm_polygons(fill = NA)
+            inner.margins = c(0.05, 0.4, 0.1, 0.05)) +
+  tm_shape(leeds_outline) + tm_polygons(fill = NULL)
 
 tm_shape(leeds_lsoa) +
   tm_polygons("nocar", fill.scale = tm_scale_intervals(n = 7, values = "-brewer.gn_bu"), 
@@ -779,7 +753,7 @@ p1 <-
   pm10 |> 
   tm_shape() + 
   tm_symbols(fill = "pm102021g", col = NA, size = 0.5,
-             fill.scale = tm_scale_continuous(values = "kovesi.linear_wh_rd_bk"), 
+               fill.scale = tm_scale_continuous(values = "kovesi.bk_rd_wh"), 
              fill.legend = tm_legend("PM10", position=c("left", "bottom")))
 # lines 
 p2 <- 
@@ -812,10 +786,6 @@ tm_shape(pm10_r) +
             col.legend = tm_legend("PM10", position=c("left", "bottom"))) +
   tm_layout(frame = F)
 
-library(png)
-library(grid)
-img <- readPNG("ch3.tmapraster1.png")
-grid.raster(img)
 
 # set the tmap mode to view
 tmap_mode('view')
@@ -829,10 +799,6 @@ tm_shape(pm10_r) +
 # reset tmap mode
 tmap_mode('plot')
 
-library(png)
-library(grid)
-img <- readPNG("ch3.tmapraster2.png")
-grid.raster(img)
 
 tm_shape(pm10_r) +
   tm_raster(col = "pm10", 
@@ -847,36 +813,28 @@ tm_shape(pm10_r) +
 polys |> 
   tm_shape() +
   tm_polygons(fill = "white") +
-  tm_text("LAD", options = opt_tm_text(remove.overlap = T))
+  tm_text("LAD")
 
 polys |> 
   tm_shape() +
-  tm_polygons(fill = "white", alpha = 0.5) +
-  tm_text("LAD", options = opt_tm_text(remove.overlap = T)) +
+  tm_polygons(fill = "white", fill_alpha = 0.5) +
+  tm_text("LAD") +
   tm_basemap("OpenStreetMap")
 
 tmap_mode('view') +
 polys |> 
   tm_shape() +
-  tm_polygons(fill = "white", alpha = 0.3) +
+  tm_polygons(fill = "white", fill_alpha = 0.3) +
   tm_text("LAD")
-
-library(png)
-library(grid)
-img <- readPNG("ch3.tmapview1.png")
-grid.raster(img)
+tmap_mode('plot')
 
 tmap_mode('view') +
 polys |> 
   tm_shape() +
-  tm_polygons(fill = NA, col = "red") +
+  tm_polygons(fill = NULL, col = "red") +
   tm_text("LAD", col = "white") +
   tm_basemap("Esri.WorldImagery")
-
-library(png)
-library(grid)
-img <- readPNG("ch3.tmapview2.png")
-grid.raster(img)
+tmap_mode('plot')
 
 # load packages
 library(sf)                 # for spatial data handling
@@ -905,7 +863,7 @@ p1 <-
             col.legend = tm_legend("PM10", position=c("left", "bottom"))) +
   # 2. add the MSOA context
   tm_shape(leeds_msoa ) +
-  tm_polygons(fill = NA) +
+  tm_polygons(fill = NULL) +
   # 3. add the roads layer
   tm_shape(roads[leeds_msoa,] |> filter(highway == "motorway")) +
   tm_lines(col = "blue", lwd = 2.5) +
@@ -920,23 +878,23 @@ print(p1)
 
 source("leeds_map.R")
 
-tm_lines(col = "red") +
+# tm_lines(col = "red") +
 
-tm_borders(col = "red", lwd = 2.5) +
+# tm_borders(col = "red", lwd = 2.5) +
 
-pdf(file='map.pdf')
+# pdf(file='map.pdf')
 
-dev.off()
+# dev.off()
 
-png(file='map.png')
+# png(file='map.png')
 
-pdf()
-png()
-tiff()
+# pdf()
+# png()
+# tiff()
 
-pdf(file = "MyPlot.pdf", other setting)
-<map code>
-dev.off()
+# pdf(file = "MyPlot.pdf", other setting)
+# <map code>
+# dev.off()
 
 # hints 
 c4a_gui() # to show the all palettes
@@ -1029,7 +987,7 @@ polygon |>
   tm_polygons(fill = "rosybrown3", fill_alpha = 0.4) +
   tm_basemap(zoom = 11, "OpenStreetMap")
 
-
+# Self-Test Question 1
 # 1. create the file with msoa
 st_write(leeds_msoa, "leeds_data.gpkg", layer = "msoa")
 # 2. add the re-projected crimes layer 
@@ -1038,6 +996,7 @@ st_write(crimes |> st_transform(st_crs(leeds_msoa)),
 # 3. read the crimes layer back in 
 crimes2 <- st_read("leeds_data.gpkg", layer = "crimes", quiet = T)
 
+# Self-Test Question 2
 my.polys <- st_coordinates(leeds_msoa |> slice(1:10, )) 
 summary(my.polys)
 my.sf <- 
@@ -1049,23 +1008,27 @@ my.sf <-
   st_cast("POLYGON") 
 my.sf |>  ggplot() + geom_sf()
 
+# Self-Test Question 3
 data(leeds_lsoa) 
 leeds_lsoa |> ggplot(aes(fill = unemp)) + geom_sf() +
-  scale_fill_binned_c4a_seq("kovesi.linear_yl_rd_bk")
+  scale_fill_binned_c4a_seq("kovesi.bk_rd_yl")
 
+# Self-Test Question 4
 data(pm10) 
 # by size
 pm10 |> ggplot(aes(size = pm102021g)) + geom_sf()  
 # by colour
 pm10 |> ggplot(aes(col = pm102021g)) + geom_sf(size = 5) +
-  scale_colour_continuous_c4a_seq("kovesi.linear_yl_rd_bk")
+  scale_colour_continuous_c4a_seq("kovesi.bk_rd_yl")
 
+# Self-Test Question 5
 # example using poly glasbey
 polys |> st_coordinates() |> data.frame() |> mutate(L2 = factor(L2)) |>
   ggplot(aes(x = X, y = Y, group = L2, fill = L2)) + geom_polygon() + 
   coord_sf() +xlab("") + ylab("") +
   scale_fill_discrete_c4a_div("poly.glasbey")
 
+# Self-Test Question 6
 tiff(file = "mymap.tiff")
 tm_shape(leeds_msoa) + 
   tm_polygons("manual", fill.scale = 
@@ -1074,6 +1037,7 @@ tm_shape(leeds_msoa) +
   tm_layout(frame = T, legend.position = c("left", "bottom"))
 dev.off()
 
+# Self-Test Question 7
 p1 <- 
   tm_shape(leeds_msoa) + 
   tm_polygons("muslim", fill.scale = 
@@ -1092,10 +1056,12 @@ p3 <-
   tm_title("Standard Deviation", position = tm_pos_in("left", "TOP")) 
 tmap_arrange(p1,p2,p3, ncol = 3)
 
+# Self-Test Question 8 
 leeds_lsoa$`Old Population` <- (leeds_lsoa$o65 > 20)
 tm_shape(leeds_lsoa) + 
   tm_polygons("Old Population", tm_scale_ordinal(values =c("chartreuse4","darkgoldenrod3"))) 
 
+# Self-Test Question 9
 library(tmap)	      # for the mapping tools
 library(ggplot2) 
 library(ggspatial)
