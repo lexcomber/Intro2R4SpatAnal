@@ -2,10 +2,11 @@
 
 ### Data Package
 
-The `Intro2R4SpatAnal` R package contains 17 datasets. It can be installed using the follow code via the `devtools` package: 
+The `Intro2R4SpatAnal` R package contains 17 datasets. It can be installed using the follow code via the `devtools` package and loaded in the usual way: 
 
 ```{r}
 devtools::install_github("lexcomber/Intro2R4SpatAnal")
+library(Intro2R4SpatAnal)
 ```
 
 ### R Scripts
