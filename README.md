@@ -9,7 +9,7 @@ devtools::install_github("lexcomber/Intro2R4SpatAnal")
 ```
 ### R Scripts
 
-R scripts containing the code for each chapter can be downlaoded from https://github.com/lexcomber/Intro2R4SpatAnal/tree/master/. Alternatively the raw code for each script (`ch2.R`, `ch3.R`, etc) can be accessed via, 
+R scripts containing the code for each chapter can be downlaoded from https://github.com/lexcomber/Intro2R4SpatAnal/tree/master/scripts. Alternatively the raw code for each script (`ch2.R`, `ch3.R`, etc) can be accessed via, 
 
 https://raw.githubusercontent.com/lexcomber/Intro2R4SpatAnal/refs/heads/master/scripts/ch2.R
 
